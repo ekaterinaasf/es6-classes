@@ -40,14 +40,14 @@ const literalB = {
 // the solution
 
 class EntriesManager {
-  /*constructor(...obj) {
+  constructor(obj) {
     if (arguments.length === 0) {
       this.entries = {};
     } else {
-      this.entries = { ...obj };
+      this.entries = obj;
     }
-  }*/
-  constructor() {
+  }
+  /*constructor() {
     this.entries = {};
     for (var i = 1; i < arguments.length; i++) {
       for (var key in arguments[i]) {
@@ -57,15 +57,26 @@ class EntriesManager {
       }
     }
   }
+  Another way to assign the default empty object can be like this: 
+  https://stackoverflow.com/a/31343459 */
   write(key, value) {
-    if (!this.entries.hasOwnProperty(key)) {
-      this.entries[key] = value;
-    }
+    //if (!this.entries.hasOwnProperty(key)) {
+    this.entries[key] = value;
   }
   read(key) {
     if (this.entries.hasOwnProperty(key)) {
-      return `( X: ${this.entries[key]}, Y: ${this.entries[key]} )`;
-      this.entries[key] = value;
+      //return `( X: ${this.entries[key]}, Y: ${this.entries[key]} )`;
+      return this.entries[key];
+    } else {
+      //return false;
+      return `no key: ${key}`;
+    }
+  }
+  remove(key) {
+    if (this.entries.hasOwnProperty(key)) {
+      delete this.entries[key];
+    } else {
+      return "no key: " + key;
     }
   }
 }
