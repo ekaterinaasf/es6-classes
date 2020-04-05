@@ -75,8 +75,9 @@ class EntriesManager {
   remove(key) {
     if (this.entries.hasOwnProperty(key)) {
       delete this.entries[key];
+      return true;
     } else {
-      return "no key: " + key;
+      return false;
     }
   }
 }
@@ -108,7 +109,7 @@ const test3b =
 console.assert(test3a, "Test 3.A - not-own properties");
 console.assert(test3b, "Test 3.B");
 
-const test4a = JSON.stringify(instanceA.entries) === '{"a":1,"b":2}'; //"[{\"a\":1,\"b\":2}]"
+const test4a = JSON.stringify(instanceA.entries) === '{"a":1,"b":2}'; //"[{\"a\":1,\"b\":2}]" -OK
 const test4b = JSON.stringify(instanceB.entries) === "{}";
 console.assert(test4a, "Test 4.A - initial values");
 console.assert(test4b, "Test 4.B");
