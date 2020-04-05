@@ -1,8 +1,8 @@
 # es6-classes/
 
-> 05/04/2020, 00:22:26 
+> 05/04/2020, 16:00:42 
 
-## literals-to-class/ - error
+## literals-to-class/ - fail
 
 * [../REVIEW.md](../REVIEW.md)
 
@@ -10,8 +10,8 @@
 
 * [challenge-1.js](#challenge-1js---pass) - pass
 * [challenge-2.js](#challenge-2js---pass) - pass
-* [challenge-3.js](#challenge-3js---error) - error
-* [challenge-4.js](#challenge-4js---error) - error
+* [challenge-3.js](#challenge-3js---fail) - fail
+* [challenge-4.js](#challenge-4js---fail) - fail
 * [example.js](#examplejs---pass) - pass
 
 ---
@@ -275,7 +275,7 @@ console.assert(test8b, "Test 8.B");
 
 ---
 
-## challenge-3.js - error
+## challenge-3.js - fail
 
 * [review source](challenge-3.js)
 
@@ -286,23 +286,16 @@ console.assert(test8b, "Test 8.B");
 + PASS: Test 2.B
 + PASS: Test 3.A - not-own properties
 + PASS: Test 3.B
-- FAIL: Test 4.A - initial values
++ PASS: Test 4.A - initial values
 + PASS: Test 4.B
-- FAIL: Test 5.A - write
++ PASS: Test 5.A - write
 + PASS: Test 5.B
-- FAIL: Test 6.A - read
++ PASS: Test 6.A - read
 - FAIL: Test 6.B
-TypeError: instanceA.remove is not a function
-    at Object.<anonymous> ( [...] /literals-to-class/challenge-3.js:123:26)
-    at Module._compile (internal/modules/cjs/loader.js:1151:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1171:10)
-    at Module.load (internal/modules/cjs/loader.js:1000:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:899:14)
-    at Module.require (internal/modules/cjs/loader.js:1040:19)
-    at require (internal/modules/cjs/helpers.js:72:18)
-    at evaluateFile ( [...] /review.js:101:5)
-    at  [...] /review.js:139:28
-    at Array.map (<anonymous>)
++ PASS: Test 7.A - remove
++ PASS: Test 7.B
++ PASS: Test 8.A - final values
++ PASS: Test 8.B
 ```
 
 ```js
@@ -348,14 +341,14 @@ const literalB = {
 // the solution
 
 class EntriesManager {
-  /*constructor(...obj) {
+  constructor(obj) {
     if (arguments.length === 0) {
       this.entries = {};
     } else {
-      this.entries = { ...obj };
+      this.entries = obj;
     }
-  }*/
-  constructor() {
+  }
+  /*constructor() {
     this.entries = {};
     for (var i = 1; i < arguments.length; i++) {
       for (var key in arguments[i]) {
@@ -365,15 +358,27 @@ class EntriesManager {
       }
     }
   }
+  Another way to assign the default empty object can be like this: 
+  https://stackoverflow.com/a/31343459 */
   write(key, value) {
-    if (!this.entries.hasOwnProperty(key)) {
-      this.entries[key] = value;
-    }
+    //if (!this.entries.hasOwnProperty(key)) {
+    this.entries[key] = value;
   }
   read(key) {
     if (this.entries.hasOwnProperty(key)) {
-      return `( X: ${this.entries[key]}, Y: ${this.entries[key]} )`;
-      this.entries[key] = value;
+      //return `( X: ${this.entries[key]}, Y: ${this.entries[key]} )`;
+      return this.entries[key];
+    } else {
+      //return false;
+      return `no key: ${key}`;
+    }
+  }
+  remove(key) {
+    if (this.entries.hasOwnProperty(key)) {
+      delete this.entries[key];
+      return true;
+    } else {
+      return false;
     }
   }
 }
@@ -405,7 +410,7 @@ const test3b =
 console.assert(test3a, "Test 3.A - not-own properties");
 console.assert(test3b, "Test 3.B");
 
-const test4a = JSON.stringify(instanceA.entries) === '{"a":1,"b":2}'; //"[{\"a\":1,\"b\":2}]"
+const test4a = JSON.stringify(instanceA.entries) === '{"a":1,"b":2}'; //"[{\"a\":1,\"b\":2}]" -OK
 const test4b = JSON.stringify(instanceB.entries) === "{}";
 console.assert(test4a, "Test 4.A - initial values");
 console.assert(test4b, "Test 4.B");
@@ -444,22 +449,33 @@ console.assert(test8b, "Test 8.B");
 
 ---
 
-## challenge-4.js - error
+## challenge-4.js - fail
 
 * [review source](challenge-4.js)
 
 ```txt
-ReferenceError: instanceA is not defined
-    at Object.<anonymous> ( [...] /literals-to-class/challenge-4.js:36:16)
-    at Module._compile (internal/modules/cjs/loader.js:1151:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1171:10)
-    at Module.load (internal/modules/cjs/loader.js:1000:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:899:14)
-    at Module.require (internal/modules/cjs/loader.js:1040:19)
-    at require (internal/modules/cjs/helpers.js:72:18)
-    at evaluateFile ( [...] /review.js:101:5)
-    at  [...] /review.js:139:28
-    at Array.map (<anonymous>)
++ PASS: Test 1.A - instanceof
++ PASS: Test 1.B 
++ PASS: Test 2.A - own properties
++ PASS: Test 2.B
++ PASS: Test 3.A - not-own properties
++ PASS: Test 3.B
++ PASS: Test 4.A - initial values
++ PASS: Test 4.B
++ PASS: Test 5.A - .all("evens")
++ PASS: Test 5.B
++ PASS: Test 6.A - .all("odds")
++ PASS: Test 6.B
++ PASS: Test 7.A - .all("nanys")
++ PASS: Test 7.B
+- FAIL: Test 8.A - new values
+- FAIL: Test 8.B
++ PASS: Test 9.A - .all("evens")
++ PASS: Testt 9.B
++ PASS: Test 10.A - .all("odds")
++ PASS: Test 10.B
++ PASS: Test 11.A - .all("nanys")
++ PASS: Test 11.B
 ```
 
 ```js
@@ -469,97 +485,145 @@ const literal1 = {
   state: {
     evens: [],
     odds: [],
-    nanys: []
+    nanys: [],
   },
   addString: function (newStr) {
     // ... code ...
   },
   all: function (selection) {
     // ... code ...
-  }
+  },
 };
 
 const literal2 = {
   state: {
     evens: [],
     odds: [],
-    nanys: []
+    nanys: [],
   },
   addString: function (newStr) {
     // ... code ...
   },
   all: function (selection) {
     // ... code ...
-  }
+  },
 };
 
 // the solution
+class Stringanizer {
+  constructor(obj) {
+    this.state = obj;
+  }
+  addString(newStr) {
+    // ... code ...
+    const rez = isNaN(newStr);
+    if (rez) {
+      //if Not a Number
+      if (!this.state.nanys.includes(newStr)) {
+        //if not already used => store into a state
+        this.state.nanys.push(newStr);
+      }
+    } else if (
+      Number(newStr) % 2 === 0 &&
+      !this.state.evens.includes(Number(newStr))
+    ) {
+      //if not already used => store
+      this.state.evens.push(Number(newStr));
+    } else {
+      this.state.odds.push(Number(newStr));
+    }
+  }
+  all(selection) {
+    // ... code ...
+    return this.state[selection];
+  }
+}
 
-
+const instanceA = new Stringanizer({
+  evens: ["2", ""],
+  odds: ["3"],
+  nanys: ["e"],
+});
+const instanceB = new Stringanizer({
+  evens: ["-0"],
+  odds: ["5"],
+  nanys: ["!"],
+});
 // the tests
 
 const test1a = instanceA instanceof Stringanizer;
 const test1b = instanceB instanceof Stringanizer;
-console.assert(test1a, 'Test 1.A - instanceof');
-console.assert(test1b, 'Test 1.B ');
+console.assert(test1a, "Test 1.A - instanceof");
+console.assert(test1b, "Test 1.B ");
 
-const test2a = instanceA.hasOwnProperty('state');
-const test2b = instanceB.hasOwnProperty('state');
-console.assert(test2a, 'Test 2.A - own properties');
-console.assert(test2b, 'Test 2.B');
+const test2a = instanceA.hasOwnProperty("state");
+const test2b = instanceB.hasOwnProperty("state");
+console.assert(test2a, "Test 2.A - own properties");
+console.assert(test2b, "Test 2.B");
 
-const test3a = !instanceA.hasOwnProperty('addString') && !instanceA.hasOwnProperty('all');
-const test3b = !instanceB.hasOwnProperty('addString') && !instanceB.hasOwnProperty('all');
-console.assert(test3a, 'Test 3.A - not-own properties');
-console.assert(test3b, 'Test 3.B');
+const test3a =
+  !instanceA.hasOwnProperty("addString") && !instanceA.hasOwnProperty("all");
+const test3b =
+  !instanceB.hasOwnProperty("addString") && !instanceB.hasOwnProperty("all");
+console.assert(test3a, "Test 3.A - not-own properties");
+console.assert(test3b, "Test 3.B");
 
-const test4a = JSON.stringify(instanceA.state) === '{"evens":["2",""],"odds":["3"],"nanys":["e"]}';
-const test4b = JSON.stringify(instanceB.state) === '{"evens":["-0"],"odds":["5"],"nanys":["!"]}';
-console.assert(test4a, 'Test 4.A - initial values');
-console.assert(test4b, 'Test 4.B');
+const test4a =
+  JSON.stringify(instanceA.state) ===
+  '{"evens":["2",""],"odds":["3"],"nanys":["e"]}';
+const test4b =
+  JSON.stringify(instanceB.state) ===
+  '{"evens":["-0"],"odds":["5"],"nanys":["!"]}';
+console.assert(test4a, "Test 4.A - initial values");
+console.assert(test4b, "Test 4.B");
 
-const test5a = instanceA.all("evens").toString() === '2,';
-const test5b = instanceB.all("evens").toString() === '-0';
+const test5a = instanceA.all("evens").toString() === "2,";
+const test5b = instanceB.all("evens").toString() === "-0";
 console.assert(test5a, 'Test 5.A - .all("evens")');
-console.assert(test5b, 'Test 5.B');
+console.assert(test5b, "Test 5.B");
 
-const test6a = instanceA.all("odds").toString() === '3';
-const test6b = instanceB.all("odds").toString() === '5';
+const test6a = instanceA.all("odds").toString() === "3";
+const test6b = instanceB.all("odds").toString() === "5";
 console.assert(test6a, 'Test 6.A - .all("odds")');
-console.assert(test6b, 'Test 6.B');
+console.assert(test6b, "Test 6.B");
 
-const test7a = instanceA.all("nanys").toString() === 'e';
-const test7b = instanceB.all("nanys").toString() === '!';
+const test7a = instanceA.all("nanys").toString() === "e";
+const test7b = instanceB.all("nanys").toString() === "!";
 console.assert(test7a, 'Test 7.A - .all("nanys")');
-console.assert(test7b, 'Test 7.B');
+console.assert(test7b, "Test 7.B");
 
-instanceA.addString('*');
-instanceA.addString('1');
-instanceA.addString('12');
+instanceA.addString("*");
+instanceA.addString("1");
+instanceA.addString("12");
 
-instanceB.addString('8');
-instanceB.addString('I0');
-instanceB.addString('9');
+instanceB.addString("8");
+instanceB.addString("I0");
+instanceB.addString("9");
 
-const test8a = JSON.stringify(instanceA.state) === '{"evens":["2","","12"],"odds":["3","1"],"nanys":["e","*"]}';
-const test8b = JSON.stringify(instanceB.state) === '{"evens":["-0","8"],"odds":["5","9"],"nanys":["!","I0"]}';
-console.assert(test8a, 'Test 8.A - new values');
-console.assert(test8b, 'Test 8.B');
+const test8a =
+  JSON.stringify(instanceA.state) ===
+  '{"evens":["2","","12"],"odds":["3","1"],"nanys":["e","*"]}';
+// Why rez is "{\"evens\":[\"2\",\"\",12],\"odds\":[\"3\",1],\"nanys\":[\"e\",\"*\"]}"
+const test8b =
+  JSON.stringify(instanceB.state) ===
+  '{"evens":["-0","8"],"odds":["5","9"],"nanys":["!","I0"]}';
+console.assert(test8a, "Test 8.A - new values");
+console.assert(test8b, "Test 8.B");
 
-const test9a = instanceA.all("evens").toString() === '2,,12';
-const test9b = instanceB.all("evens").toString() === '-0,8';
+const test9a = instanceA.all("evens").toString() === "2,,12";
+const test9b = instanceB.all("evens").toString() === "-0,8";
 console.assert(test9a, 'Test 9.A - .all("evens")');
-console.assert(test9b, 'Testt 9.B');
+console.assert(test9b, "Testt 9.B");
 
-const test10a = instanceA.all("odds").toString() === '3,1';
-const test10b = instanceB.all("odds").toString() === '5,9';
+const test10a = instanceA.all("odds").toString() === "3,1";
+const test10b = instanceB.all("odds").toString() === "5,9";
 console.assert(test10a, 'Test 10.A - .all("odds")');
-console.assert(test10b, 'Test 10.B');
+console.assert(test10b, "Test 10.B");
 
-const test11a = instanceA.all("nanys").toString() === 'e,*';
-const test11b = instanceB.all("nanys").toString() === '!,I0';
+const test11a = instanceA.all("nanys").toString() === "e,*";
+const test11b = instanceB.all("nanys").toString() === "!,I0";
 console.assert(test11a, 'Test 11.A - .all("nanys")');
-console.assert(test11b, 'Test 11.B');
+console.assert(test11b, "Test 11.B");
 
 ```
 
