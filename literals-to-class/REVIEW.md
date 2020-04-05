@@ -1,6 +1,6 @@
 # es6-classes/
 
-> 3/31/2020, 3:20:57 PM 
+> 05/04/2020, 00:22:26 
 
 ## literals-to-class/ - error
 
@@ -8,30 +8,33 @@
 
 ### files
 
-* [challenge-1.js](#challenge-1js---error) - error
-* [challenge-2.js](#challenge-2js---error) - error
+* [challenge-1.js](#challenge-1js---pass) - pass
+* [challenge-2.js](#challenge-2js---pass) - pass
 * [challenge-3.js](#challenge-3js---error) - error
 * [challenge-4.js](#challenge-4js---error) - error
 * [example.js](#examplejs---pass) - pass
 
 ---
 
-## challenge-1.js - error
+## challenge-1.js - pass
 
 * [review source](challenge-1.js)
 
 ```txt
-ReferenceError: _ is not defined
-    at Object.<anonymous> ( [...] /literals-to-class/challenge-1.js:27:19)
-    at Module._compile (internal/modules/cjs/loader.js:777:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
-    at Module.load (internal/modules/cjs/loader.js:643:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
-    at Module.require (internal/modules/cjs/loader.js:683:19)
-    at require (internal/modules/cjs/helpers.js:16:16)
-    at evaluateFile ( [...] /review.js:101:5)
-    at  [...] /review.js:139:28
-    at Array.map (<anonymous>)
++ PASS: Test 1.A - instanceof
++ PASS: Test 1.B 
++ PASS: Test 2.A - own properties
++ PASS: Test 2.B
++ PASS: Test 3.A - not-own properties
++ PASS: Test 3.B
++ PASS: Test 4.A - evens
++ PASS: Test 4.B
++ PASS: Test 5.A - odds
++ PASS: Test 5.B
++ PASS: Test 6.A - evens
++ PASS: Test 6.B
++ PASS: Test 7.A - odds
++ PASS: Test 7.B
 ```
 
 ```js
@@ -59,50 +62,69 @@ const literalB = {
 
 // the solution
 
-class EvenOdd { };
+class EvenOdd {
+  constructor(numbers) {
+    this.numbers = numbers;
+    //this.evens = evens;
+    //this.odds = odds;
+  }
+  get evens() {
+    return this.numbers.filter(num => num % 2 === 0);
+  }
+  get odds() {
+    return this.numbers.filter(num => num % 2 !== 0);
+  }
+}
 
-const instanceA = _;
-const instanceB = _;
+EvenOdd.prototype.evens = this.evens;
+EvenOdd.prototype.odds = this.odds;
+
+const instanceA = new EvenOdd(literalA.numbers);
+const instanceB = new EvenOdd(literalB.numbers);
+//const instanceA = new EvenOdd(literalA.numbers, literalA.evens, literalA.odds);
+//const instanceB = new EvenOdd(literalB.numbers, literalB.evens, literalB.odds);
 
 // the tests
 
 const test1a = instanceA instanceof EvenOdd;
 const test1b = instanceB instanceof EvenOdd;
-console.assert(test1a, 'Test 1.A - instanceof');
-console.assert(test1b, 'Test 1.B ');
+console.assert(test1a, "Test 1.A - instanceof");
+console.assert(test1b, "Test 1.B ");
 
-const test2a = instanceA.hasOwnProperty('numbers');
-const test2b = instanceB.hasOwnProperty('numbers');
-console.assert(test2a, 'Test 2.A - own properties');
-console.assert(test2b, 'Test 2.B');
+const test2a = instanceA.hasOwnProperty("numbers");
+const test2b = instanceB.hasOwnProperty("numbers");
+console.assert(test2a, "Test 2.A - own properties");
+console.assert(test2b, "Test 2.B");
 
-const test3a = !instanceA.hasOwnProperty('evens') && !instanceA.hasOwnProperty('odds');
-const test3b = !instanceB.hasOwnProperty('evens') && !instanceB.hasOwnProperty('odds');
-console.assert(test3a, 'Test 3.A - not-own properties');
-console.assert(test3b, 'Test 3.B');
+const test3a =
+  !instanceA.hasOwnProperty("evens") && !instanceA.hasOwnProperty("odds");
+const test3b =
+  !instanceB.hasOwnProperty("evens") && !instanceB.hasOwnProperty("odds");
+console.assert(test3a, "Test 3.A - not-own properties");
+console.assert(test3b, "Test 3.B");
 
-const test4a = instanceA.evens.toString() === '0,-2,2';
-const test4b = instanceB.evens.toString() === '6,-4';
-console.assert(test4a, 'Test 4.A - evens');
-console.assert(test4b, 'Test 4.B');
+const test4a = instanceA.evens.toString() === "0,-2,2";
+const test4b = instanceB.evens.toString() === "6,-4";
+console.assert(test4a, "Test 4.A - evens");
+console.assert(test4b, "Test 4.B");
 
-const test5a = instanceA.odds.toString() === '-1,1';
-const test5b = instanceB.odds.toString() === '3,67,-21';
-console.assert(test5a, 'Test 5.A - odds');
-console.assert(test5b, 'Test 5.B');
+const test5a = instanceA.odds.toString() === "-1,1";
+const test5b = instanceB.odds.toString() === "3,67,-21";
+console.assert(test5a, "Test 5.A - odds");
+console.assert(test5b, "Test 5.B");
 
 instanceA.numbers = [5, 4, 3, 2, 1, 0];
 instanceB.numbers = [0, -1, -2, -3, -4, -5];
 
-const test6a = instanceA.evens.toString() === '4,2,0';
-const test6b = instanceB.evens.toString() === '0,-2,-4';
-console.assert(test6a, 'Test 6.A - evens');
-console.assert(test6b, 'Test 6.B');
+const test6a = instanceA.evens.toString() === "4,2,0";
+const test6b = instanceB.evens.toString() === "0,-2,-4";
+console.assert(test6a, "Test 6.A - evens");
+console.assert(test6b, "Test 6.B");
 
-const test7a = instanceA.odds.toString() === '5,3,1';
-const test7b = instanceB.odds.toString() === '-1,-3,-5';
-console.assert(test7a, 'Test 7.A - odds');
-console.assert(test7b, 'Test 7.B');
+const test7a = instanceA.odds.toString() === "5,3,1";
+const test7b = instanceB.odds.toString() === "-1,-3,-5";
+console.assert(test7a, "Test 7.A - odds");
+console.assert(test7b, "Test 7.B");
 
 ```
 
@@ -110,28 +132,27 @@ console.assert(test7b, 'Test 7.B');
 
 ---
 
-## challenge-2.js - error
+## challenge-2.js - pass
 
 * [review source](challenge-2.js)
 
 ```txt
 + PASS: Test 1.A - instanceof
 + PASS: Test 1.B 
-- FAIL: Test 2.A - own properties
-- FAIL: Test 2.B
++ PASS: Test 2.A - own properties
++ PASS: Test 2.B
 + PASS: Test 3.A - not-own properties
 + PASS: Test 3.B
-TypeError: Cannot read property 'max' of undefined
-    at Object.<anonymous> ( [...] /literals-to-class/challenge-2.js:54:32)
-    at Module._compile (internal/modules/cjs/loader.js:777:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
-    at Module.load (internal/modules/cjs/loader.js:643:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
-    at Module.require (internal/modules/cjs/loader.js:683:19)
-    at require (internal/modules/cjs/helpers.js:16:16)
-    at evaluateFile ( [...] /review.js:101:5)
-    at  [...] /review.js:139:28
-    at Array.map (<anonymous>)
++ PASS: Test 4.A - initial values
++ PASS: Test 4.B
++ PASS: Test 5.A - get spread
++ PASS: Test 5.B
++ PASS: Test 6.A - addNumber
++ PASS: Test 6.B
++ PASS: Test 7.A - get spread
++ PASS: Test 7.B
++ PASS: Test 8.A - addNumber
++ PASS: Test 8.B
 ```
 
 ```js
@@ -140,32 +161,59 @@ TypeError: Cannot read property 'max' of undefined
 const literalA = {
   state: {
     max: -Infinity,
-    min: Infinity
+    min: Infinity,
   },
   get spread() {
     return this.state.min - this.state.min;
   },
   addNumber(newNum) {
     // ... code ...
-  }
+  },
 };
 
 const literalB = {
   state: {
     max: -Infinity,
-    min: Infinity
+    min: Infinity,
   },
   get spread() {
     return this.state.min - this.state.min;
   },
   addNumber(newNum) {
     // ... code ...
-  }
+    if (newNum > this.state.max) {
+      this.state.max = newNum;
+    } else if (newNum < this.state.min) {
+      this.state.min = newNum;
+    }
+  },
 };
 
 // the solution
 
-class MaxMin { };
+class MaxMin {
+  constructor() {
+    this.state = {
+      max: -Infinity,
+      min: Infinity,
+    };
+  }
+
+  get spread() {
+    return this.state.max - this.state.min;
+  }
+  addNumber(newNum) {
+    if (newNum > this.state.max) {
+      this.state.max = newNum;
+      //newNum < this.state.min;
+      if (this.state.min === Infinity) {
+        this.state.min = newNum;
+      }
+    } else {
+      this.state.min = newNum;
+    }
+  }
+}
 
 // these two lines are correct! don't change them
 const instanceA = new MaxMin();
@@ -175,47 +223,51 @@ const instanceB = new MaxMin();
 
 const test1a = instanceA instanceof MaxMin;
 const test1b = instanceB instanceof MaxMin;
-console.assert(test1a, 'Test 1.A - instanceof');
-console.assert(test1b, 'Test 1.B ');
+console.assert(test1a, "Test 1.A - instanceof");
+console.assert(test1b, "Test 1.B ");
 
-const test2a = instanceA.hasOwnProperty('state');
-const test2b = instanceB.hasOwnProperty('state');
-console.assert(test2a, 'Test 2.A - own properties');
-console.assert(test2b, 'Test 2.B');
+const test2a = instanceA.hasOwnProperty("state");
+const test2b = instanceB.hasOwnProperty("state");
+console.assert(test2a, "Test 2.A - own properties");
+console.assert(test2b, "Test 2.B");
 
-const test3a = !instanceA.hasOwnProperty('spread') && !instanceA.hasOwnProperty('addNumber');
-const test3b = !instanceB.hasOwnProperty('spread') && !instanceB.hasOwnProperty('addNumber');
-console.assert(test3a, 'Test 3.A - not-own properties');
-console.assert(test3b, 'Test 3.B');
+const test3a =
+  !instanceA.hasOwnProperty("spread") && !instanceA.hasOwnProperty("addNumber");
+const test3b =
+  !instanceB.hasOwnProperty("spread") && !instanceB.hasOwnProperty("addNumber");
+console.assert(test3a, "Test 3.A - not-own properties");
+console.assert(test3b, "Test 3.B");
 
-const test4a = instanceA.state.max === -Infinity && instanceA.state.min === Infinity;
-const test4b = instanceA.state.max === -Infinity && instanceA.state.min === Infinity;
-console.assert(test4a, 'Test 4.A - initial values');
-console.assert(test4b, 'Test 4.B');
+const test4a =
+  instanceA.state.max === -Infinity && instanceA.state.min === Infinity;
+const test4b =
+  instanceA.state.max === -Infinity && instanceA.state.min === Infinity;
+console.assert(test4a, "Test 4.A - initial values");
+console.assert(test4b, "Test 4.B");
 
 const test5a = instanceA.spread === -Infinity;
 const test5b = instanceB.spread === -Infinity;
-console.assert(test5a, 'Test 5.A - get spread');
-console.assert(test5b, 'Test 5.B');
+console.assert(test5a, "Test 5.A - get spread");
+console.assert(test5b, "Test 5.B");
 
 instanceA.addNumber(0);
 instanceB.addNumber(-4);
 const test6a = instanceA.state.max === 0 && instanceA.state.min === 0;
 const test6b = instanceB.state.max === -4 && instanceB.state.min === -4;
-console.assert(test6a, 'Test 6.A - addNumber');
-console.assert(test6b, 'Test 6.B');
+console.assert(test6a, "Test 6.A - addNumber");
+console.assert(test6b, "Test 6.B");
 
 const test7a = instanceA.spread === 0;
 const test7b = instanceB.spread === 0;
-console.assert(test7a, 'Test 7.A - get spread');
-console.assert(test7b, 'Test 7.B');
+console.assert(test7a, "Test 7.A - get spread");
+console.assert(test7b, "Test 7.B");
 
 instanceA.addNumber(-2);
 instanceB.addNumber(-2);
 const test8a = instanceA.state.max === 0 && instanceA.state.min === -2;
 const test8b = instanceB.state.max === -2 && instanceB.state.min === -4;
-console.assert(test8a, 'Test 8.A - addNumber');
-console.assert(test8b, 'Test 8.B');
+console.assert(test8a, "Test 8.A - addNumber");
+console.assert(test8b, "Test 8.B");
 
 ```
 
@@ -230,20 +282,24 @@ console.assert(test8b, 'Test 8.B');
 ```txt
 + PASS: Test 1.A - instanceof
 + PASS: Test 1.B 
-- FAIL: Test 2.A - own properties
-- FAIL: Test 2.B
++ PASS: Test 2.A - own properties
++ PASS: Test 2.B
 + PASS: Test 3.A - not-own properties
 + PASS: Test 3.B
 - FAIL: Test 4.A - initial values
-- FAIL: Test 4.B
-TypeError: instanceA.write is not a function
-    at Object.<anonymous> ( [...] /literals-to-class/challenge-3.js:70:11)
-    at Module._compile (internal/modules/cjs/loader.js:777:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
-    at Module.load (internal/modules/cjs/loader.js:643:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
-    at Module.require (internal/modules/cjs/loader.js:683:19)
-    at require (internal/modules/cjs/helpers.js:16:16)
++ PASS: Test 4.B
+- FAIL: Test 5.A - write
++ PASS: Test 5.B
+- FAIL: Test 6.A - read
+- FAIL: Test 6.B
+TypeError: instanceA.remove is not a function
+    at Object.<anonymous> ( [...] /literals-to-class/challenge-3.js:123:26)
+    at Module._compile (internal/modules/cjs/loader.js:1151:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1171:10)
+    at Module.load (internal/modules/cjs/loader.js:1000:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:899:14)
+    at Module.require (internal/modules/cjs/loader.js:1040:19)
+    at require (internal/modules/cjs/helpers.js:72:18)
     at evaluateFile ( [...] /review.js:101:5)
     at  [...] /review.js:139:28
     at Array.map (<anonymous>)
@@ -254,8 +310,8 @@ TypeError: instanceA.write is not a function
 
 const literalA = {
   entries: {
-    x: '123',
-    sa: 67
+    x: "123",
+    sa: 67,
   },
   write: function (key, value) {
     // ... code ...
@@ -273,25 +329,54 @@ const literalA = {
     } else {
       // ... code ...
     }
-  }
+  },
 };
 
 const literalB = {
   entries: {
-    chico: 'marx',
-    gummo: 'marx',
-    harpo: 'marx',
-    groucho: 'marx',
-    zeppo: 'marx',
+    chico: "marx",
+    gummo: "marx",
+    harpo: "marx",
+    groucho: "marx",
+    zeppo: "marx",
   },
-  write: function (key, value) { },
-  read: function (key) { },
-  remove: function (key) { }
+  write: function (key, value) {},
+  read: function (key) {},
+  remove: function (key) {},
 };
 
 // the solution
 
-class EntriesManager { };
+class EntriesManager {
+  /*constructor(...obj) {
+    if (arguments.length === 0) {
+      this.entries = {};
+    } else {
+      this.entries = { ...obj };
+    }
+  }*/
+  constructor() {
+    this.entries = {};
+    for (var i = 1; i < arguments.length; i++) {
+      for (var key in arguments[i]) {
+        if (arguments[i].hasOwnProperty(key)) {
+          entries[key] = arguments[i][key];
+        }
+      }
+    }
+  }
+  write(key, value) {
+    if (!this.entries.hasOwnProperty(key)) {
+      this.entries[key] = value;
+    }
+  }
+  read(key) {
+    if (this.entries.hasOwnProperty(key)) {
+      return `( X: ${this.entries[key]}, Y: ${this.entries[key]} )`;
+      this.entries[key] = value;
+    }
+  }
+}
 
 // these two lines are correct!  don't change them
 const instanceA = new EntriesManager({ a: 1, b: 2 });
@@ -301,51 +386,57 @@ const instanceB = new EntriesManager();
 
 const test1a = instanceA instanceof EntriesManager;
 const test1b = instanceB instanceof EntriesManager;
-console.assert(test1a, 'Test 1.A - instanceof');
-console.assert(test1b, 'Test 1.B ');
+console.assert(test1a, "Test 1.A - instanceof");
+console.assert(test1b, "Test 1.B ");
 
-const test2a = instanceA.hasOwnProperty('entries');
-const test2b = instanceB.hasOwnProperty('entries');
-console.assert(test2a, 'Test 2.A - own properties');
-console.assert(test2b, 'Test 2.B');
+const test2a = instanceA.hasOwnProperty("entries");
+const test2b = instanceB.hasOwnProperty("entries");
+console.assert(test2a, "Test 2.A - own properties");
+console.assert(test2b, "Test 2.B");
 
-const test3a = !instanceA.hasOwnProperty('write') && !instanceA.hasOwnProperty('read') && !instanceA.hasOwnProperty('remove');
-const test3b = !instanceB.hasOwnProperty('write') && !instanceB.hasOwnProperty('read') && !instanceB.hasOwnProperty('remove');
-console.assert(test3a, 'Test 3.A - not-own properties');
-console.assert(test3b, 'Test 3.B');
+const test3a =
+  !instanceA.hasOwnProperty("write") &&
+  !instanceA.hasOwnProperty("read") &&
+  !instanceA.hasOwnProperty("remove");
+const test3b =
+  !instanceB.hasOwnProperty("write") &&
+  !instanceB.hasOwnProperty("read") &&
+  !instanceB.hasOwnProperty("remove");
+console.assert(test3a, "Test 3.A - not-own properties");
+console.assert(test3b, "Test 3.B");
 
-const test4a = JSON.stringify(instanceA.entries) === '{"a":1,"b":2}';
-const test4b = JSON.stringify(instanceB.entries) === '{}';
-console.assert(test4a, 'Test 4.A - initial values');
-console.assert(test4b, 'Test 4.B');
+const test4a = JSON.stringify(instanceA.entries) === '{"a":1,"b":2}'; //"[{\"a\":1,\"b\":2}]"
+const test4b = JSON.stringify(instanceB.entries) === "{}";
+console.assert(test4a, "Test 4.A - initial values");
+console.assert(test4b, "Test 4.B");
 
-instanceA.write('a', 3);
-instanceB.write('a', 3);
+instanceA.write("a", 3);
+instanceB.write("a", 3);
 const test5a = JSON.stringify(instanceA.entries) === '{"a":3,"b":2}';
 const test5b = JSON.stringify(instanceB.entries) === '{"a":3}';
-console.assert(test5a, 'Test 5.A - write');
-console.assert(test5b, 'Test 5.B');
+console.assert(test5a, "Test 5.A - write");
+console.assert(test5b, "Test 5.B");
 
-const test6a = instanceA.read('b') === 2;
+const test6a = instanceA.read("b") === 2;
 let test6b;
 try {
-  instanceB.read('b');
+  instanceB.read("b");
   test6b = false;
 } catch (err) {
-  test6b = err.message === 'no key: b';
+  test6b = err.message === "no key: b";
 }
-console.assert(test6a, 'Test 6.A - read');
-console.assert(test6b, 'Test 6.B');
+console.assert(test6a, "Test 6.A - read");
+console.assert(test6b, "Test 6.B");
 
-const test7a = instanceA.remove('b') === true;
-const test7b = instanceB.remove('b') === false;
-console.assert(test7a, 'Test 7.A - remove');
-console.assert(test7b, 'Test 7.B');
+const test7a = instanceA.remove("b") === true;
+const test7b = instanceB.remove("b") === false;
+console.assert(test7a, "Test 7.A - remove");
+console.assert(test7b, "Test 7.B");
 
 const test8a = JSON.stringify(instanceA.entries) === '{"a":3}';
 const test8b = JSON.stringify(instanceB.entries) === '{"a":3}';
-console.assert(test8a, 'Test 8.A - final values');
-console.assert(test8b, 'Test 8.B');
+console.assert(test8a, "Test 8.A - final values");
+console.assert(test8b, "Test 8.B");
 
 ```
 
@@ -360,12 +451,12 @@ console.assert(test8b, 'Test 8.B');
 ```txt
 ReferenceError: instanceA is not defined
     at Object.<anonymous> ( [...] /literals-to-class/challenge-4.js:36:16)
-    at Module._compile (internal/modules/cjs/loader.js:777:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
-    at Module.load (internal/modules/cjs/loader.js:643:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
-    at Module.require (internal/modules/cjs/loader.js:683:19)
-    at require (internal/modules/cjs/helpers.js:16:16)
+    at Module._compile (internal/modules/cjs/loader.js:1151:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1171:10)
+    at Module.load (internal/modules/cjs/loader.js:1000:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:899:14)
+    at Module.require (internal/modules/cjs/loader.js:1040:19)
+    at require (internal/modules/cjs/helpers.js:72:18)
     at evaluateFile ( [...] /review.js:101:5)
     at  [...] /review.js:139:28
     at Array.map (<anonymous>)
