@@ -34,7 +34,6 @@ class Stringanizer {
     this.state = obj;
   }
   addString(newStr) {
-    // ... code ...
     const rez = isNaN(newStr);
     if (rez) {
       //if Not a Number
@@ -47,13 +46,12 @@ class Stringanizer {
       !this.state.evens.includes(Number(newStr))
     ) {
       //if not already used => store
-      this.state.evens.push(Number(newStr));
+      this.state.evens.push(newStr);
     } else {
-      this.state.odds.push(Number(newStr));
+      this.state.odds.push(newStr);
     }
   }
   all(selection) {
-    // ... code ...
     return this.state[selection];
   }
 }
@@ -95,6 +93,15 @@ const test4b =
   '{"evens":["-0"],"odds":["5"],"nanys":["!"]}';
 console.assert(test4a, "Test 4.A - initial values");
 console.assert(test4b, "Test 4.B");
+//Corrections from Evan, but with them test fails
+/*const test4a =
+  JSON.stringify(instanceA.state) ===
+  '{"evens":["","2"],"odds":["3"],"nanys":["e"]}';
+const test4b =
+  JSON.stringify(instanceB.state) ===
+  '{"evens":["-0"],"odds":["5"],"nanys":["!"]}';
+console.assert(test4a, "Test 4.A - initial values");
+console.assert(test4b, "Test 4.B"); */
 
 const test5a = instanceA.all("evens").toString() === "2,";
 const test5b = instanceB.all("evens").toString() === "-0";
@@ -128,6 +135,15 @@ const test8b =
   '{"evens":["-0","8"],"odds":["5","9"],"nanys":["!","I0"]}';
 console.assert(test8a, "Test 8.A - new values");
 console.assert(test8b, "Test 8.B");
+
+/*const test8a =
+  JSON.stringify(instanceA.state) ===
+  '{"evens":["","2","12"],"odds":["3","1"],"nanys":["e","*"]}';
+const test8b =
+  JSON.stringify(instanceB.state) ===
+  '{"evens":["-0","8"],"odds":["5","9"],"nanys":["!","I0"]}';
+console.assert(test8a, "Test 8.A - new values");
+console.assert(test8b, "Test 8.B");*/
 
 const test9a = instanceA.all("evens").toString() === "2,,12";
 const test9b = instanceB.all("evens").toString() === "-0,8";

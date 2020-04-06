@@ -68,8 +68,7 @@ class EntriesManager {
       //return `( X: ${this.entries[key]}, Y: ${this.entries[key]} )`;
       return this.entries[key];
     } else {
-      //return false;
-      return `no key: ${key}`;
+      throw new Error(`no key: ${key}`); // catch block catches the error, and executes a code to handle it
     }
   }
   remove(key) {

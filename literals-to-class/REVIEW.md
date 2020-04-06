@@ -1,8 +1,8 @@
 # es6-classes/
 
-> 05/04/2020, 16:00:42 
+> 06/04/2020, 21:47:23 
 
-## literals-to-class/ - fail
+## literals-to-class/ - pass
 
 * [../REVIEW.md](../REVIEW.md)
 
@@ -10,8 +10,8 @@
 
 * [challenge-1.js](#challenge-1js---pass) - pass
 * [challenge-2.js](#challenge-2js---pass) - pass
-* [challenge-3.js](#challenge-3js---fail) - fail
-* [challenge-4.js](#challenge-4js---fail) - fail
+* [challenge-3.js](#challenge-3js---pass) - pass
+* [challenge-4.js](#challenge-4js---pass) - pass
 * [example.js](#examplejs---pass) - pass
 
 ---
@@ -275,7 +275,7 @@ console.assert(test8b, "Test 8.B");
 
 ---
 
-## challenge-3.js - fail
+## challenge-3.js - pass
 
 * [review source](challenge-3.js)
 
@@ -291,7 +291,7 @@ console.assert(test8b, "Test 8.B");
 + PASS: Test 5.A - write
 + PASS: Test 5.B
 + PASS: Test 6.A - read
-- FAIL: Test 6.B
++ PASS: Test 6.B
 + PASS: Test 7.A - remove
 + PASS: Test 7.B
 + PASS: Test 8.A - final values
@@ -369,8 +369,7 @@ class EntriesManager {
       //return `( X: ${this.entries[key]}, Y: ${this.entries[key]} )`;
       return this.entries[key];
     } else {
-      //return false;
-      return `no key: ${key}`;
+      throw new Error(`no key: ${key}`); // catch block catches the error, and executes a code to handle it
     }
   }
   remove(key) {
@@ -449,7 +448,7 @@ console.assert(test8b, "Test 8.B");
 
 ---
 
-## challenge-4.js - fail
+## challenge-4.js - pass
 
 * [review source](challenge-4.js)
 
@@ -468,8 +467,8 @@ console.assert(test8b, "Test 8.B");
 + PASS: Test 6.B
 + PASS: Test 7.A - .all("nanys")
 + PASS: Test 7.B
-- FAIL: Test 8.A - new values
-- FAIL: Test 8.B
++ PASS: Test 8.A - new values
++ PASS: Test 8.B
 + PASS: Test 9.A - .all("evens")
 + PASS: Testt 9.B
 + PASS: Test 10.A - .all("odds")
@@ -515,7 +514,6 @@ class Stringanizer {
     this.state = obj;
   }
   addString(newStr) {
-    // ... code ...
     const rez = isNaN(newStr);
     if (rez) {
       //if Not a Number
@@ -528,13 +526,12 @@ class Stringanizer {
       !this.state.evens.includes(Number(newStr))
     ) {
       //if not already used => store
-      this.state.evens.push(Number(newStr));
+      this.state.evens.push(newStr);
     } else {
-      this.state.odds.push(Number(newStr));
+      this.state.odds.push(newStr);
     }
   }
   all(selection) {
-    // ... code ...
     return this.state[selection];
   }
 }
@@ -576,6 +573,15 @@ const test4b =
   '{"evens":["-0"],"odds":["5"],"nanys":["!"]}';
 console.assert(test4a, "Test 4.A - initial values");
 console.assert(test4b, "Test 4.B");
+//Corrections from Evan, but with them test fails
+/*const test4a =
+  JSON.stringify(instanceA.state) ===
+  '{"evens":["","2"],"odds":["3"],"nanys":["e"]}';
+const test4b =
+  JSON.stringify(instanceB.state) ===
+  '{"evens":["-0"],"odds":["5"],"nanys":["!"]}';
+console.assert(test4a, "Test 4.A - initial values");
+console.assert(test4b, "Test 4.B"); */
 
 const test5a = instanceA.all("evens").toString() === "2,";
 const test5b = instanceB.all("evens").toString() === "-0";
@@ -609,6 +615,15 @@ const test8b =
   '{"evens":["-0","8"],"odds":["5","9"],"nanys":["!","I0"]}';
 console.assert(test8a, "Test 8.A - new values");
 console.assert(test8b, "Test 8.B");
+
+/*const test8a =
+  JSON.stringify(instanceA.state) ===
+  '{"evens":["","2","12"],"odds":["3","1"],"nanys":["e","*"]}';
+const test8b =
+  JSON.stringify(instanceB.state) ===
+  '{"evens":["-0","8"],"odds":["5","9"],"nanys":["!","I0"]}';
+console.assert(test8a, "Test 8.A - new values");
+console.assert(test8b, "Test 8.B");*/
 
 const test9a = instanceA.all("evens").toString() === "2,,12";
 const test9b = instanceB.all("evens").toString() === "-0,8";
